@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Calculator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(145deg, #a1c4fd, #c2e9fb);
+    }
+
+    .calculator {
+      width: 100%;
+      max-width: 400px;
+      background: #e0e5ec;
+      border-radius: 30px;
+      padding: 20px;
+      box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+      display: flex;
+      flex-direction: column;
+      transition: 0.3s;
+    }
+
+    .display {
+      background: #e0e5ec;
+      border-radius: 20px;
+      box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+      padding: 20px;
+      margin-bottom: 20px;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .history {
+      font-size: 1rem;
+      color: #6b7280;
+      text-align: right;
+      margin-bottom: 5px;
+      min-height: 20px;
+    }
+
+    .screen {
+      font-size: 2.5rem;
+      text-align: right;
+      border: none;
+      background: transparent;
+      outline: none;
+      color: #111827;
+      overflow-x: auto;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      position: relative;
+    }
+
+    button {
+      padding: 20px;
+      font-size: 1.4rem;
+      font-weight: 600;
+      border-radius: 15px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #e0e5ec;
+      box-shadow: 5px 5px 15px #bebebe, -5px -5px 15px #ffffff;
+      color: #111827;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 8px 8px 20px #bebebe, -8px -8px 20px #ffffff;
+    }
+
+    button:active {
+      transform: scale(0.95);
+      box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+    }
+
+    .operator {
+      background: linear-gradient(145deg, #3b82f6, #60a5fa);
+      color: white;
+      box-shadow: 5px 5px 15px #1e40af, -5px -5px 15px #60a5fa;
+    }
+
+    .equal {
+      background: linear-gradient(145deg, #10b981, #34d399);
+      color: white;
+      box-shadow: 5px 5px 15px #059669, -5px -5px 15px #34d399;
+    }
+
+    .clear {
+      background: linear-gradient(145deg, #f87171, #fca5a5);
+      color: white;
+      box-shadow: 5px 5px 15px #b91c1c, -5px -5px 15px #fca5a5;
+    }
+
+    .delete {
+      background: linear-gradient(145deg, #fbbf24, #fcd34d);
+      color: white;
+      box-shadow: 5px 5px 15px #b45309, -5px -5px 15px #fcd34d;
+    }
+
+    .zero {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 480px) {
+      .calculator {
+        max-width: 100%;
+        padding: 15px;
+      }
+
+      .screen {
+        font-size: 2rem;
+      }
+
+      button {
+        padding: 18px;
+        font-size: 1.2rem;
+      }
+
+      .buttons {
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+    <div class="display">
+      <div class="history" id="history"></div>
+      <input type="text" id="screen" class="screen" readonly>
+    </div>
+
+    <div class="buttons">
+      <button class="clear" onclick="clearScreen()">C</button>
+      <button class="delete" onclick="deleteLast()">⌫</button>
+      <button class="operator" onclick="appendValue('%')">%</button>
+      <button class="operator" onclick="appendValue('/')">÷</button>
+
+      <button onclick="appendValue('7')">7</button>
+      <button onclick="appendValue('8')">8</button>
+      <button onclick="appendValue('9')">9</button>
+      <button class="operator" onclick="appendValue('*')">×</button>
+
+      <button onclick="appendValue('4')">4</button>
+      <button onclick="appendValue('5')">5</button>
+      <button onclick="appendValue('6')">6</button>
+      <button class="operator" onclick="appendValue('-')">−</button>
+
+      <button onclick="appendValue('1')">1</button>
+      <button onclick="appendValue('2')">2</button>
+      <button onclick="appendValue('3')">3</button>
+      <button class="operator" onclick="appendValue('+')">+</button>
+
+      <button class="zero" onclick="appendValue('0')">0</button>
+      <button onclick="appendValue('.')">.</button>
+      <button class="equal" onclick="calculateResult()">=</button>
+    </div>
+  </div>
+
+  <script>
+    const screen = document.getElementById("screen");
+    const history = document.getElementById("history");
+
+    function appendValue(value) {
+      screen.value += value;
+    }
+
+    function clearScreen() {
+      screen.value = "";
+      history.textContent = "";
+    }
+
+    function deleteLast() {
+      screen.value = screen.value.slice(0, -1);
+    }
+
+    function calculateResult() {
+      try {
+        if (screen.value.trim() === "") return;
+        const expression = screen.value;
+        const result = eval(expression);
+        history.textContent = expression + " =";
+        screen.value = result;
+      } catch {
+        screen.value = "Error";
+        setTimeout(() => screen.value = "", 1000);
+      }
+    }
+
+    document.addEventListener("keydown", (event) => {
+      const key = event.key;
+      if (!isNaN(key) || ['+', '-', '*', '/', '%', '.'].includes(key)) {
+        appendValue(key);
+      } else if (key === 'Enter' || key === '=') {
+        event.preventDefault();
+        calculateResult();
+      } else if (key === 'Backspace') {
+        deleteLast();
+      } else if (key === 'Escape' || key.toLowerCase() === 'c') {
+        clearScreen();
+      }
+    });
+  </script>
+
+</body>
+</html>
