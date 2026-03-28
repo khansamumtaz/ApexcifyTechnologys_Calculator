@@ -79,7 +79,8 @@ The following keys are supported:
 
 ## Project Preview
 
-![Calculator Preview](C:\Users\DELL\Pictures\Screenshot 2026-03-28 192440.png)
+[Calculator Preview](<img width="349" height="442" alt="Screenshot 2026-03-28 192440" src="https://github.com/user-attachments/assets/1f374887-8a02-4818-b84c-f17d75740302" />
+)
 
 ##  Calculator Layout
 This calculator includes:
