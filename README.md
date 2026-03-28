@@ -79,7 +79,7 @@ The following keys are supported:
 
 ## Project Preview
 
-![Calculator Preview](Screenshot 2026-03-28 192440.png)
+![Calculator Preview](C:\Users\DELL\Pictures\Screenshot 2026-03-28 192440.png)
 
 ##  Calculator Layout
 This calculator includes:
